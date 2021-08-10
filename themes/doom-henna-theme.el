@@ -33,7 +33,7 @@ determine the exact padding."
   "A dark theme inspired by Atom One Dark"
 
   ;; name        default   256       16
-  ((bg         '("#121212" nil       nil            ))
+    ((bg         '("#101010" nil       nil            ))
    (bg-alt     '("#1B1F23" nil       nil            ))
    (base0      '("#10151a" "black"   "black"        ))
    (base1      '("#181A1F" "#2e2e2e" "brightblack"  ))
@@ -98,7 +98,8 @@ determine the exact padding."
 
 
    (modeline-fg     fg)
-   (modeline-fg-alt base7)
+   (modeline-fg-alt base5)
+
    (modeline-bg
     (if -modeline-bright
         (doom-darken blue 0.475)
@@ -111,22 +112,35 @@ determine the exact padding."
    (modeline-bg-inactive-l `(,(car bg-alt) ,@(cdr base1))))
 
 
-  ;;;; Base theme face overrides
-  (((font-lock-comment-face &override)
-    :background (if doom-henna-comment-bg (doom-lighten bg 0.05)))
+  ;; --- extra faces ------------------------
+
+  ;; Operator Fonts
+  ((elscreen-tab-other-screen-face :background "#353a42" :foreground "#1e2022")
+
+   (evil-goggles-default-face :inherit 'region :background (doom-blend region bg 0.5))
+
    ((line-number &override) :foreground base7)
    ((line-number-current-line &override) :foreground fg)
+
+   (font-lock-operator-face
+    :foreground operators)
+
+   (font-lock-comment-face
+    :foreground comments
+    :background (if doom-henna-comment-bg (doom-lighten bg 0.05)))
+   (font-lock-doc-face
+    :inherit 'font-lock-comment-face
+    :foreground doc-comments)
+
    (mode-line
     :background modeline-bg :foreground modeline-fg
     :box (if -modeline-pad `(:line-width ,-modeline-pad :color ,modeline-bg)))
    (mode-line-inactive
     :background modeline-bg-inactive :foreground modeline-fg-alt
     :box (if -modeline-pad `(:line-width ,-modeline-pad :color ,modeline-bg-inactive)))
-   (mode-line-emphasis :foreground (if -modeline-bright base8 highlight))
+   (mode-line-emphasis
+    :foreground (if -modeline-bright base8 highlight))
 
-   ;;;; elscreen
-   (elscreen-tab-other-screen-face :background "#353a42" :foreground "#1e2022")
-   ;;;; solaire-mode
    (solaire-mode-line-face
     :inherit 'mode-line
     :background modeline-bg-l
@@ -136,17 +150,21 @@ determine the exact padding."
     :background modeline-bg-inactive-l
     :box (if -modeline-pad `(:line-width ,-modeline-pad :color ,modeline-bg-inactive-l)))
    (solaire-default-face  :inherit 'default :background base1)
-   ;;;; hl-todo
+
+   ;; hl-todo
    (hl-todo :foreground red :weight 'bold)
-   ;;;; iedit
+
+   ;; iedit
    (iedit-occurrence            :foreground blue :weight 'bold :inverse-video t)
    (iedit-read-only-occurrence  :inherit 'region)
-   ;;;; doom-modeline
+
+   ;; Doom modeline
    (doom-modeline-bar                 :background (if -modeline-bright modeline-bg highlight))
    (doom-modeline-buffer-file         :inherit 'mode-line-buffer-id :weight 'bold)
    (doom-modeline-buffer-path         :inherit 'mode-line-emphasis :weight 'bold)
    (doom-modeline-buffer-project-root :foreground green :weight 'bold)
-   ;;;; centaur-tabs
+
+   ;; centaur
    (centaur-tabs-selected                   :background base3 :foreground fg)
    (centaur-tabs-unselected                 :background base2 :foreground grey)
    (centaur-tabs-selected-modified          :background bg :foreground green-alt)
@@ -154,35 +172,41 @@ determine the exact padding."
    (centaur-tabs-active-bar-face            :background green)
    (centaur-tabs-modified-marker-selected   :inherit 'centaur-tabs-selected-modified :foreground green)
    (centaur-tabs-modified-marker-unselected :inherit 'centaur-tabs-unselected-modified :foreground green)
-   ;;;; doom-emacs
+
+   ;; Doom dashboard
    (doom-dashboard-banner      :foreground red)
    (doom-dashboard-footer-icon :foreground green-alt)
    (doom-dashboard-loaded      :foreground green-alt)
-   ;;;; which-key
+
+   ;; which-key
    (which-key-key-face                   :foreground red)
    (which-key-group-description-face     :foreground green)
    (which-key-command-description-face   :foreground teal)
    (which-key-local-map-description-face :foreground green)
-   ;;;; highlight-numbers
+
+   ;; highlight-numbers
    (highlight-numbers-number :foreground blue)
-   ;;;; ivy
+
+   ;; ivy-mode
    (ivy-minibuffer-match-highlight  :foreground red)
    (ivy-highlight-face              :foreground red)
    (ivy-minibuffer-match-face-2
-    :inherit 'ivy-minibuffer-match-face-1
-    :foreground red :background base1 :weight 'semi-bold)
+     :inherit 'ivy-minibuffer-match-face-1
+     :foreground red :background base1 :weight 'semi-bold)
    (ivy-minibuffer-match-face-4
-    :inherit 'ivy-minibuffer-match-face-2
-    :foreground red :weight 'semi-bold)
+     :inherit 'ivy-minibuffer-match-face-2
+     :foreground red :weight 'semi-bold)
    (ivy-current-match :background red :distant-foreground base0 :weight 'normal)
-   ;;;; treemacs
+
+   ;; treemacs
    (treemacs-directory-face     :foreground base8)
    (treemacs-git-modified-face  :foreground yellow)
    (treemacs-git-added-face     :foreground green)
    (treemacs-git-untracked-face :foreground green-alt)
    (treemacs-file-face          :foreground fg)
    (treemacs-root-face          :foreground red :weight 'bold)
-   ;;;; magit
+
+   ;; magit
    (magit-blame-headling              :foreground magenta :background base3)
    (magit-cherry-equvalent            :foreground red)
    (magit-log-author                  :foreground magenta)
@@ -192,11 +216,13 @@ determine the exact padding."
    (magit-diff-hunk-heading           :background (doom-darken teal 0.5))
    (magit-diff-hunk-heading-highlight :background (doom-darken teal 0.2))
    (magit-branch-current              :foreground green-alt)
-   ;;;; popup
+
+   ;; popup
    (popup-tip-face        :background base8 :foreground fg)
    (popup-menu-mouse-face :background base8 :foreground fg)
    (popup-summary-face    :background base7 :foreground fg)
-   ;;;; rainbow delimiters
+
+   ;; rainbow delimiters
    (rainbow-delimiters-depth-1-face :foreground red)
    (rainbow-delimiters-depth-2-face :foreground green)
    (rainbow-delimiters-depth-3-face :foreground teal)
@@ -204,31 +230,47 @@ determine the exact padding."
    (rainbow-delimiters-depth-5-face :foreground blue)
    (rainbow-delimiters-depth-6-face :foreground green-alt)
    (rainbow-delimiters-depth-7-face :foreground cyan)
-   ;;;; Dired
+
+   ;; Dired
    (diredfl-date-time    :foreground teal)
    (diredfl-number       :foreground green)
    (diredfl-dir-heading  :foreground teal :weight 'bold)
-   ;;;; css-mode <built-in> / scss-mode
+   
+   ;; --- major-mode faces -------------------
+
+   ;; css-mode / scss-mode
    (css-proprietary-property :foreground cyan)
    (css-property             :foreground teal)
    (css-selector             :foreground red)
-   ;;;; markdown-mode
-   (markdown-markup-face           :foreground grey)
-   (markdown-header-face           :inherit 'bold :foreground red)
+
+   ;; markdown-mode
+   ;; (markdown-markup-face           :foreground grey)
+   ;; (markdown-header-face           :inherit 'bold :foreground red)
+   ;; ((markdown-code-face &override) :background (doom-lighten base3 0.05))
+   ;; (markdown-bold-face             :foreground green :weight 'bold)
+   ;; (markdown-url-face              :foreground fg :underline t)
+   ;; (markdown-link-face             :foreground green)
+   ;; (markdown-list-face             :foregroung fg)
+   ;; (markdown-header-face-1         :foreground fg)
+   ;; (markdown-header-face-2         :foreground fg)
+   ;; (markdown-header-face-3         :foreground fg)
+   ;; (markdown-header-face-4         :foreground fg)
+   ;; (markdown-header-face-5         :foreground fg)
+   ;; (markdown-header-face-6         :foreground fg)
+   ;; (markdown-header-delimiter-face :foreground fg)
+   ;; (markdown-inline-code-face      :foreground teal)
+
+   ;; markdown-mode
+   (markdown-markup-face :foreground base5)
+   (markdown-header-face :inherit 'bold :foreground red)
    ((markdown-code-face &override) :background (doom-lighten base3 0.05))
-   (markdown-bold-face             :foreground green :weight 'bold)
-   (markdown-url-face              :foreground fg :underline t)
-   (markdown-link-face             :foreground green)
-   (markdown-list-face             :foregroung fg)
-   (markdown-header-face-1         :foreground fg)
-   (markdown-header-face-2         :foreground fg)
-   (markdown-header-face-3         :foreground fg)
-   (markdown-header-face-4         :foreground fg)
-   (markdown-header-face-5         :foreground fg)
-   (markdown-header-face-6         :foreground fg)
-   (markdown-header-delimiter-face :foreground fg)
-   (markdown-inline-code-face      :foreground teal)
-   ;;;; outline <built-in>
+
+   ;; org-mode
+   (org-hide              :foreground hidden)
+   (org-code              :foreground blue)
+   (org-table             :foreground fg-alt)
+
+   ;; outline
    (outline-1 :foreground red                         :weight 'bold :extend t)
    (outline-2 :foreground teal                        :weight 'bold :extend t)
    (outline-3 :foreground green                       :weight 'bold :extend t)
@@ -237,34 +279,37 @@ determine the exact padding."
    (outline-6 :foreground (doom-lighten blue 0.5)     :weight 'bold :extend t)
    (outline-7 :foreground (doom-lighten red 0.5)      :weight 'bold :extend t)
    (outline-8 :foreground (doom-lighten blue 0.8)     :weight 'bold :extend t)
-   ;;;; org <built-in>
-   (org-hide              :foreground hidden)
-   ((org-code &override)  :foreground blue)
-   (org-table             :foreground fg-alt)
-   ;;;; web-mode
+
+   ;; web-mode
    (web-mode-html-attr-equal-face  :foreground teal)
    (web-mode-html-tag-face         :foreground green-alt)
    (web-mode-html-tag-bracket-face :foreground teal)
    (web-mode-keyword-face          :foreground teal)
    (web-mode-block-control-face    :foreground red)
    (web-mode-variable-name-face    :foreground (doom-lighten green 0.5))
-   ;;;; typescript
+
+   ;; typescript
    (typescript-access-modifier-face :foreground green-alt)
    (typescript-this-face            :foreground green-alt)
-   ;;;; LSP
+
+   ;; LSP
    (lsp-face-highlight-textual :background "black")
    (lsp-face-highlight-read    :background (doom-darken dark-blue 0.3))
-   ;;;; js
+
+   ;; js
    (js2-object-property          :foreground fg)
    (js2-object-property-access   :foreground green)
    (js2-jsdoc-value              :foreground red)
    (js2-jsdoc-tag                :foreground teal)
    (js2-jsdoc-html-tag-delimiter :foreground base8)
    (js2-jsdoc-html-tag-name      :foreground base8)
-   ;;;; rjsx
-   (rjsx-attr :foreground blue))
+   
+   ;; rjsx
+   (rjsx-attr :foreground blue)
+   )
 
-  ;;;; Base theme variable overrides-
+  ;; --- extra variables ---------------------
   ())
+
 
 ;;; doom-henna-theme.el ends here
